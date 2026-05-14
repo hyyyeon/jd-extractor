@@ -24,9 +24,9 @@ def main() -> None:
     with st.sidebar:
         st.header("설정")
         url = st.text_input("채용공고 상세 페이지 URL", placeholder="https://example.com/jobs/123")
-        title_parent_depth = st.slider("제목 선택 후 부모 확장 단계", 0, 3, 0)
-        jd_parent_depth = st.slider("본문/JD 선택 후 부모 확장 단계", 0, 6, 1)
-        st.caption("본문이 너무 짧게 잡히면 부모 확장 단계를 올린 뒤 다시 선택하세요.")
+        title_parent_depth = st.slider("제목을 더 큰 영역으로 잡기", 0, 3, 0)
+        jd_parent_depth = st.slider("본문/JD을 더 큰 영역으로 잡기", 0, 6, 1)
+        st.caption("본문이 너무 짧게 잡히면 ‘본문/JD를 더 큰 영역으로 잡기’ 값을 올린 뒤 다시 선택하세요.")
 
         start = st.button("영역 선택 시작", type="primary", use_container_width=True)
         reset = st.button("다시 선택", use_container_width=True)

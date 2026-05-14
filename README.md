@@ -1,104 +1,270 @@
 # 채용공고 JD 추출기
 
-비전공자도 채용공고 상세 페이지에서 제목과 본문 영역을 직접 클릭해 텍스트를 추출하고 `CSV` 또는 `TXT`로 저장할 수 있는 MVP입니다.
+채용공고 상세 페이지에서 제목과 본문(JD)을 직접 클릭해 텍스트로 저장하는 도구입니다.
 
-## 폴더 구조
+코드를 몰라도 URL을 입력하고 브라우저에서 원하는 영역을 클릭하면 CSV 또는 TXT 파일로 저장할 수 있습니다.
 
-```text
-.
-├── app.py
-├── jd_extractor/
-│   ├── __init__.py
-│   ├── browser_selector.py
-│   └── storage.py
-├── results/
-│   └── .gitkeep
-├── requirements.txt
-└── README.md
-```
+---
 
-## 설치
+# 주요 기능
+
+- 채용공고 제목 추출
+- 채용공고 본문(JD) 추출
+- 사용자가 직접 원하는 영역 선택
+- 추출 결과 미리보기
+- CSV 저장
+- TXT 저장
+- 다시 선택 기능
+- 본문 영역 확장 선택 기능
+
+---
+
+# 기술 스택
+
+- Python
+- Streamlit
+- Playwright
+
+---
+
+# 설치 방법
+
+## 1. Python 설치
+
+Python 3.10 이상 권장
+
+설치 확인:
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-playwright install chromium
+python3 --version
 ```
 
-환경에 따라 `python` 대신 `python3`를 사용해야 할 수 있습니다.
+---
+
+## 2. 프로젝트 다운로드
+
+```bash
+git clone <repository_url>
+cd jd-extractor
+```
+
+또는 ZIP 다운로드 후 압축 해제
+
+---
+
+## 3. 가상환경 생성
+
+Linux / macOS:
 
 ```bash
 python3 -m venv .venv
+```
+
+Windows:
+
+```bash
+python -m venv .venv
+```
+
+---
+
+## 4. 가상환경 활성화
+
+Linux / macOS:
+
+```bash
 source .venv/bin/activate
+```
+
+Windows:
+
+```bash
+.venv\Scripts\activate
+```
+
+---
+
+## 5. 필요한 패키지 설치
+
+```bash
 pip install -r requirements.txt
-playwright install chromium
 ```
 
-Windows PowerShell에서는 가상환경 활성화 명령만 다릅니다.
+---
 
-```powershell
-.venv\Scripts\Activate.ps1
+## 6. Playwright 브라우저 설치
+
+```bash
+playwright install
 ```
 
-## 실행
+Chromium 브라우저가 설치됩니다.
+
+---
+
+# 실행 방법
+
+가상환경 활성화 후 실행:
 
 ```bash
 streamlit run app.py
 ```
 
-브라우저에 Streamlit 화면이 열리면 다음 순서로 사용합니다.
+또는:
 
-1. 왼쪽 입력창에 채용공고 상세 페이지 URL을 넣습니다.
-2. `영역 선택 시작` 버튼을 누릅니다.
-3. Playwright가 연 브라우저에서 안내에 따라 제목 영역을 클릭합니다.
-4. 이어서 본문/JD 영역을 클릭합니다.
-5. Streamlit 화면에서 추출 결과를 확인합니다.
-6. `CSV로 저장`, `TXT로 저장` 또는 다운로드 버튼을 사용합니다.
+```bash
+python -m streamlit run app.py
+```
 
-저장 파일은 다음 위치에 생성됩니다.
+실행 후 브라우저에서 아래 주소 접속:
+
+```text
+http://localhost:8501
+```
+
+---
+
+# 사용 방법
+
+## 1. 채용공고 URL 입력
+
+왼쪽 입력창에 채용공고 상세 페이지 URL을 입력합니다.
+
+예시:
+
+```text
+https://example.com/jobs/123
+```
+
+---
+
+## 2. 영역 선택 시작
+
+`영역 선택 시작` 버튼을 누르면 Playwright 브라우저가 열립니다.
+
+---
+
+## 3. 제목 영역 클릭
+
+브라우저에서 채용공고 제목 부분을 클릭합니다.
+
+예시:
+
+```text
+백엔드 개발자 채용
+```
+
+---
+
+## 4. 본문/JD 영역 클릭
+
+채용공고 본문 또는 JD 영역을 클릭합니다.
+
+예시:
+
+```text
+담당업무
+자격요건
+우대사항
+기술스택
+```
+
+---
+
+## 5. 추출 결과 확인
+
+Streamlit 화면에서 추출된 결과를 미리 확인할 수 있습니다.
+
+---
+
+## 6. CSV/TXT 저장
+
+추출 결과를 CSV 또는 TXT 파일로 저장할 수 있습니다.
+
+저장 위치:
 
 ```text
 results/jobs.csv
 results/job.txt
 ```
 
-## 코드 흐름
+---
 
-`app.py`는 사용자가 보는 화면입니다. URL 입력, 부모 확장 단계 설정, 미리보기, 저장/다운로드 버튼을 담당합니다.
+# 제목을 더 큰 영역으로 잡기
 
-`jd_extractor/browser_selector.py`는 Playwright로 브라우저를 열고 페이지 안에 클릭 감지 스크립트를 넣습니다. 사용자가 영역을 클릭하면 해당 HTML 요소의 CSS selector와 `innerText`를 가져옵니다. 본문처럼 큰 영역이 필요한 경우에는 클릭한 요소의 부모 요소로 몇 단계 확장할지 설정할 수 있습니다.
+제목을 클릭했을 때, 클릭한 글자만 가져올지 제목을 감싸는 더 큰 영역까지 가져올지 정하는 설정입니다.
 
-`jd_extractor/storage.py`는 추출 결과를 `results/jobs.csv`와 `results/job.txt`로 저장합니다.
+보통 제목은 한 줄이기 때문에 `0`을 추천합니다.
 
-## 오류가 날 가능성이 높은 부분
+추천값:
 
-### Playwright 브라우저가 설치되지 않은 경우
-
-증상: `Executable doesn't exist` 같은 오류가 납니다.
-
-해결:
-
-```bash
-playwright install chromium
+```text
+0
 ```
 
-### 페이지가 너무 오래 걸리거나 열리지 않는 경우
+---
 
-증상: 페이지 로딩 시간 초과 오류가 납니다.
+# 본문/JD를 더 큰 영역으로 잡기
 
-해결: URL이 채용공고 상세 페이지가 맞는지 확인하고, 일반 브라우저에서 먼저 접속 가능한지 확인하세요.
+본문을 클릭했을 때, 클릭한 문장만 가져올지 본문 전체를 감싸는 더 큰 영역까지 가져올지 정하는 설정입니다.
 
-### 클릭했는데 본문이 너무 짧게 추출되는 경우
+본문은 여러 문단과 목록으로 구성되어 있는 경우가 많기 때문에 보통 `1 ~ 3` 정도를 추천합니다.
 
-원인: `p`, `span` 같은 작은 요소를 클릭했을 가능성이 큽니다.
+추천값:
 
-해결: 왼쪽 설정의 `본문/JD 선택 후 부모 확장 단계`를 2~4 정도로 올린 뒤 `다시 선택`하세요.
+```text
+1 ~ 3
+```
 
-### 로그인, 캡차, 접근 제한 페이지인 경우
+---
 
-이 MVP는 로그인, 캡차, 접근 제한 우회 기능을 제공하지 않습니다. 사용자가 직접 접근 가능한 공개 상세 페이지만 대상으로 합니다.
+## 이런 경우 사용하세요
 
-### CSS selector가 항상 재사용 가능하지는 않은 경우
+### 본문이 너무 짧게 추출될 때
 
-동적으로 생성되는 사이트는 class 이름이나 DOM 구조가 매번 바뀔 수 있습니다. 이 MVP에서는 선택 당시의 selector를 기록해 확인용으로 남깁니다.
+예시:
+
+```text
+담당업무 한 줄만 추출됨
+```
+
+→ `본문/JD를 더 큰 영역으로 잡기` 값을 올린 뒤 다시 선택하세요.
+
+---
+
+### 메뉴나 다른 내용까지 같이 추출될 때
+
+예시:
+
+```text
+상단 메뉴, 회사 정보까지 같이 추출됨
+```
+
+→ `본문/JD를 더 큰 영역으로 잡기` 값을 낮춘 뒤 다시 선택하세요.
+
+---
+
+# 주요 파일 설명
+
+## app.py
+
+- Streamlit UI
+- URL 입력
+- 결과 미리보기
+- 다운로드 기능
+
+---
+
+## browser_selector.py
+
+- Playwright 브라우저 실행
+- 클릭 감지
+- selector 생성
+- 텍스트 추출
+
+---
+
+## storage.py
+
+- CSV 저장
+- TXT 저장
